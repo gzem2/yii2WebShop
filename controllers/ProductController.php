@@ -5,12 +5,14 @@ namespace app\controllers;
 use Yii;
 use app\models\Product;
 use app\models\ProductSearch;
+use app\models\ProductForm;
 use app\models\ProductCategory;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use app\models\LoginForm;
+use yii\web\UploadedFile;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -104,10 +106,16 @@ class ProductController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Product();
+        $model = new ProductForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if($model->load(Yii::$app->request->post())) {
+            if (Yii::$app->request->isPost) {
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            }
+            $save_id = $model->upload();
+            if ($save_id) {
+                return $this->redirect(['view', 'id' => $save_id]);
+            }
         }
 
         return $this->render('create', [
@@ -124,10 +132,20 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $db = $this->findModel($id);
+        $model = new ProductForm();
+        foreach(['name', 'description', 'category_id', 'price', 'quantity_available'] as $attribute) {
+            $model[$attribute] = $db[$attribute];
+        }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if($model->load(Yii::$app->request->post())) {
+            if (Yii::$app->request->isPost) {
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            }
+            $save_id = $model->upload($db);
+            if ($save_id) {
+                return $this->redirect(['view', 'id' => $save_id]);
+            }
         }
 
         return $this->render('update', [

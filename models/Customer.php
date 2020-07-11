@@ -103,7 +103,7 @@ class Customer extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
      */
     public static function findByUsername($email)
     {
-        return findByEmail($email);
+        return static::findByEmail($email);
     }
 
     /**

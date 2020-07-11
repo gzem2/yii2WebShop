@@ -1,6 +1,7 @@
 <?php
 
 use app\models\ProductCategory;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 
@@ -22,6 +23,7 @@ $this->title = 'WebShop';
             <div class="col-lg-10 product-container">
                 <?php foreach ($model as $row): ?>
                     <div class="product">
+                        <img src="<?php echo Url::to(['/img/']) . '/' . $row->image;?>">
                     <p><a href="<?php echo \Yii::getAlias('@web')?>/product/view?id=<?php echo $row->id?>"><?php echo $row->name ?></a></p>
                     </div>
                 <?php endforeach;?>

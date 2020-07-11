@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Product */
@@ -51,5 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'quantity_available',
         ],
     ]) ?>
+    <img src="<?php echo Url::to(['/img/']) . '/' . $model->image;?>">
 
 </div>

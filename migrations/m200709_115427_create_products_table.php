@@ -17,6 +17,7 @@ class m200709_115427_create_products_table extends Migration
             'id' => $this->primaryKey(),
             'name' => Schema::TYPE_STRING . ' NOT NULL',
             'description' => Schema::TYPE_TEXT . ' NOT NULL',
+            'image' => $this->string()->defaultValue('no_image.jpg'),
             'category_id' => $this->integer()->defaultValue(1),
             'price' => Schema::TYPE_FLOAT . ' NOT NULL',
             'quantity_available' => Schema::TYPE_INTEGER . ' NOT NULL',

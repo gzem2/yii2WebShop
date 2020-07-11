@@ -16,6 +16,8 @@ use app\models\ProductCategory;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'imageFile')->fileInput() ?>
 
     <?= $form->field($model, 'category_id')->dropDownList(ProductCategory::getCategoryNames()) ?>
 

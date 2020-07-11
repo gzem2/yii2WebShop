@@ -47,7 +47,7 @@ AppAsset::register($this);
         $items[] = ['label' => 'Products', 'url' => ['/product']];
     }
     if (Yii::$app->user->can('manageProductCategory')){
-        $items[] = ['label' => 'Category', 'url' => ['/product-category']];
+        $items[] = ['label' => 'Categories', 'url' => ['/product-category']];
     }
     if (Yii::$app->user->isGuest) {
         $items[] = ['label' => 'Register', 'url' => ['/site/register']];
