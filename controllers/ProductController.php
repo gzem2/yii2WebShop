@@ -170,15 +170,15 @@ class ProductController extends Controller
     /**
      * Purchase action
      */
-    public function actionPurchase($id)
+    public function actionPurchase($id, $count)
     {
         if (Yii::$app->user->isGuest) {
-            Yii::$app->runAction('login');
+            return Yii::$app->runAction('login');
         }   
-        
         if (Yii::$app->user->can('purchaseProduct')) {
-            // 
-            return Yii::$app->runAction('order/index');
+            return Yii::$app->runAction('order/purchase', ['id' => $id, 'count' => $count]);
+        } else {
+            return false;
         }
     }
     

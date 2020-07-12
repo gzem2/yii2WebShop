@@ -41,13 +41,16 @@ AppAsset::register($this);
     ];
     // Display menu items depending on user role
     if (Yii::$app->user->can('purchaseProduct')){
-        $items[] = ['label' => 'My Cart', 'url' => ['/order']];
+        $items[] = ['label' => 'My Cart', 'url' => ['/order'], 'active' => $this->context->route == 'order/index'];
+    }
+    if (Yii::$app->user->can('purchaseProduct')){
+        $items[] = ['label' => 'My Orders', 'url' => ['/order/my-orders']];
     }
     if (Yii::$app->user->can('manageProduct')){
-        $items[] = ['label' => 'Products', 'url' => ['/product']];
+        $items[] = ['label' => 'Products', 'url' => ['/product'], 'active' => $this->context->route == 'product/index'];
     }
     if (Yii::$app->user->can('manageProductCategory')){
-        $items[] = ['label' => 'Categories', 'url' => ['/product-category']];
+        $items[] = ['label' => 'Categories', 'url' => ['/product-category'], 'active' => $this->context->route == 'product-category/index'];
     }
     if (Yii::$app->user->isGuest) {
         $items[] = ['label' => 'Register', 'url' => ['/site/register']];

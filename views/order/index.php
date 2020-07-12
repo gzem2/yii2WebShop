@@ -1,9 +1,63 @@
 <?php
-/* @var $this yii\web\View */
-?>
-<h1>order/index</h1>
 
-<p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
-</p>
+use app\models\Product;
+use yii\data\ArrayDataProvider;
+use yii\grid\GridView;
+use yii\helpers\Html;
+
+$totalprice = Yii::$app->session->get('totalprice');
+$orderitems = Yii::$app->session->get('orderitems');
+$data = [];
+foreach ($orderitems as $id => $count) {
+    $product = Product::findOne(['id' => $id]);
+    $data[] = ['id' => $id, 'name' => $product->name, 'amount' => $count];
+}
+$dataProvider = new ArrayDataProvider([
+    'allModels' => $data,
+    'pagination' => [
+        'pageSize' => 10,
+    ],
+]);
+?>
+<h3>My Cart</h3>
+<?php
+echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        'id',
+        'name',
+        'amount',
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{myButton}',
+            'buttons' => [
+                'myButton' => function ($url, $model, $key) {
+                    return Html::a('X Remove', ['remove-item', 'id' => $model['id']], [
+                        'class' => 'btn btn-primary btn-xs',
+                    ]);
+                },
+            ]
+        ]
+    ]
+]);
+
+if ($orderitems->count() != 0) {
+    echo '<p>';
+    echo Html::a('Check out', ['check-out'], [
+        'class' => 'btn btn-primary',
+        'data' => [
+            'confirm' => 'Proceed with check out?',
+            'method' => 'post',
+        ],
+    ]);
+    echo " ";
+    echo Html::a('Clear cart', ['destroy-cart'], [
+        'class' => 'btn btn-warning',
+        'data' => [
+            'confirm' => 'All items will be lost, proceed?',
+            'method' => 'post',
+        ],
+    ]);
+    echo '</p>';
+}
+?>
