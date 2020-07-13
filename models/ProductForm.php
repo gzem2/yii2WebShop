@@ -4,8 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-
-use yii\web\UploadedFile;
+use yii\imagine\Image;
 
 class ProductForm extends Model
 {
@@ -48,8 +47,13 @@ class ProductForm extends Model
             }
             $model->attributes = \Yii::$app->request->post('ProductForm');
             if(!empty($this->imageFile)) {
-                $this->imageFile->saveAs('img/' . $this->imageFile->baseName . '.' . $this->imageFile->extension); 
-                $model->image = $this->imageFile->baseName . '.' . $this->imageFile->extension;
+                $timestamp = time();
+                $image = $this->imageFile->baseName . '_' . $timestamp . '.' . $this->imageFile->extension;
+                $imgpath = 'img/' . $this->imageFile->baseName . '_' . $timestamp . '.' . $this->imageFile->extension;
+                $thumbnail = 'thumbs/' . $this->imageFile->baseName . '_' . $timestamp . '_thumb' . '.' . $this->imageFile->extension;
+                $this->imageFile->saveAs($imgpath);
+                Image::thumbnail($imgpath, 225, 225)->save($thumbnail, ['quality' => 80]);
+                $model->image = $image;
             }
             $model->save();
             return $model->id;

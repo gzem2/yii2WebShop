@@ -63,4 +63,16 @@ class Product extends \yii\db\ActiveRecord
     {
         return static::find()->where(['category_id' => $category_id])->all();
     }
+
+    /**
+     * Return name of thumbnail
+     */
+    public function getThumbnail()
+    {
+        $img = explode('.', $this->image);
+        $ext = array_pop($img);
+        $img[0] = $img[0] . '_thumb';
+        array_push($img, $ext);
+        return implode('.', $img);
+    }
 }

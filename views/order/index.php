@@ -5,6 +5,8 @@ use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
+$this->title = 'My Cart';
+
 $totalprice = Yii::$app->session->get('totalprice');
 $orderitems = Yii::$app->session->get('orderitems');
 $data = [];

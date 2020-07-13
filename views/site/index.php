@@ -19,11 +19,11 @@ $this->title = 'WebShop';
                     <p><a class="btn" href="category?name=<?php echo str_replace(' ', '_', $c->category_name) ?>"><?php echo $c->category_name ?></a></p>
                 <?php endforeach;?>
             </div>
-            <h3><a href="site">Products</a></h3>
+            <h3><a href="<?php echo \Yii::getAlias('@web')?>/">Products</a></h3>
             <div class="col-lg-10 product-container">
                 <?php foreach ($model as $row): ?>
                     <div class="product">
-                        <img src="<?php echo Url::to(['/img/']) . '/' . $row->image;?>">
+                        <img src="<?php echo Url::to(['/thumbs/']) . '/' . $row->getThumbnail();?>">
                     <p><a href="<?php echo \Yii::getAlias('@web')?>/product/view?id=<?php echo $row->id?>"><?php echo $row->name ?></a></p>
                     </div>
                 <?php endforeach;?>
