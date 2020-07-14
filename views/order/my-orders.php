@@ -8,5 +8,13 @@ $this->title = 'My Orders';
 <?php
 echo GridView::widget([
     'dataProvider' => $dataProvider,
+    'columns' => [
+        [
+            'attribute' => 'id',
+            'label' => 'Order id'
+        ],
+        'total_price',
+        'status'
+    ],
 ]); 
 ?>

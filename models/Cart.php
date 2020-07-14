@@ -58,8 +58,8 @@ class Cart extends Model
 
         // Add item to cart
         if (!isset($this->session['orderitems'][strval($id)])) {
-            $this->session['orderitems'][strval($id)] = intval($count);
-            $this->session['totalprice'] += $price;
+            $this->session['orderitems'][strval($id)] = $count;
+            $this->session['totalprice'] += $price * $count;
         } else {
             $this->session['orderitems'][strval($id)] += $count;
             $this->session['totalprice'] += $price * $count;

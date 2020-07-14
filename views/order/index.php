@@ -12,7 +12,7 @@ $orderitems = Yii::$app->session->get('orderitems');
 $data = [];
 foreach ($orderitems as $id => $count) {
     $product = Product::findOne(['id' => $id]);
-    $data[] = ['id' => $id, 'name' => $product->name, 'amount' => $count];
+    $data[] = ['id' => $id, 'name' => $product->name, 'amount' => $count, 'price' => $product->price];
 }
 $dataProvider = new ArrayDataProvider([
     'allModels' => $data,
@@ -26,9 +26,19 @@ $dataProvider = new ArrayDataProvider([
 echo GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
-        'id',
         'name',
+        [
+            'label' => 'Item Price',
+            'attribute' => 'price',
+        ],
         'amount',
+        [
+            'label' => 'Item Total Cost',
+            'attribute' => 'price',
+            'content' => function($model, $key, $index, $column) {
+                return $model['price'] * $model['amount'];
+            }
+        ],
         [
             'class' => 'yii\grid\ActionColumn',
             'template' => '{myButton}',
@@ -44,6 +54,10 @@ echo GridView::widget([
 ]);
 
 if ($orderitems->count() != 0) {
+    echo '<p><h4>';
+    echo 'Order Total Cost: ';
+    echo $totalprice;
+    echo '</h4></p>';
     echo '<p>';
     echo Html::a('Check out', ['check-out'], [
         'class' => 'btn btn-warning',
