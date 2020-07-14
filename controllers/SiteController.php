@@ -2,16 +2,17 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\ContactForm;
 use app\models\LoginForm;
 use app\models\Product;
 use app\models\ProductCategory;
 use app\models\RegisterForm;
-use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\data\Pagination;
 
 class SiteController extends Controller
 {
@@ -62,9 +63,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $model = Product::find()->all();
+        $query = Product::find();
+        $count = $query->count();
+        $pages = new Pagination([
+            'totalCount' => $count,
+            'pageSize' => 6,
+        ]);
+        $models = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
         return $this->render('index', [
-            'model' => $model,
+            'models' => $models,
+            'pages' => $pages,
         ]);
     }
 
@@ -75,9 +85,18 @@ class SiteController extends Controller
     {
         $category_name = str_replace('_', ' ', $name);
         $category_id = array_flip(ProductCategory::getCategoryNames())[$category_name];
-        $model = Product::findByCategory($category_id);
+        $query = Product::find()->where(['category_id' => $category_id]);
+        $count = $query->count();
+        $pages = new Pagination([
+            'totalCount' => $count,
+            'pageSize' => 6,
+        ]);
+        $models = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
         return $this->render('index', [
-            'model' => $model,
+            'models' => $models,
+            'pages' => $pages,
         ]);
     }
 
@@ -135,33 +154,5 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 }

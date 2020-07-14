@@ -6,10 +6,30 @@ use Yii;
 use app\models\Order;
 use yii\data\ActiveDataProvider;
 use app\models\Cart;
+use yii\filters\AccessControl;
 
 class OrderController extends \yii\web\Controller
 {
     public $cart;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'purchase', 'remove-item', 'destroy-item', 'destroy-cart', 'check-out', 'my-orders'],
+                        'roles' => ['purchaseProduct']
+                    ],
+                ],
+            ],
+        ];
+    }
 
     /**
      * Set variables
@@ -34,7 +54,7 @@ class OrderController extends \yii\web\Controller
      */
     public function actionPurchase($id, $count)
     {
-        if($this->cart->purchase($id, $count)) {
+        if ($this->cart->purchase($id, $count)) {
             Yii::$app->session->setFlash('success', "Product added to your cart");
             return $this->redirect(['product/view', 'id' => $id]);
         } else {
@@ -87,7 +107,7 @@ class OrderController extends \yii\web\Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Order::find()->where(['customer_id' => Yii::$app->user->id]),
-            'sort'=> ['defaultOrder' => ['id' => SORT_DESC]],
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
             'pagination' => [
                 'pageSize' => 10,
             ],

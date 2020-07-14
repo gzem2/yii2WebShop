@@ -46,7 +46,7 @@ echo GridView::widget([
 if ($orderitems->count() != 0) {
     echo '<p>';
     echo Html::a('Check out', ['check-out'], [
-        'class' => 'btn btn-primary',
+        'class' => 'btn btn-warning',
         'data' => [
             'confirm' => 'Proceed with check out?',
             'method' => 'post',
@@ -54,7 +54,7 @@ if ($orderitems->count() != 0) {
     ]);
     echo " ";
     echo Html::a('Clear cart', ['destroy-cart'], [
-        'class' => 'btn btn-warning',
+        'class' => 'btn btn-primary',
         'data' => [
             'confirm' => 'All items will be lost, proceed?',
             'method' => 'post',

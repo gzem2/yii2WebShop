@@ -36,19 +36,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if (!\Yii::$app->user->can('manageProduct')) : ?>
         <p>
             <?= Html::a('Add to Cart', ['order/purchase', 'id' => $model->id, 'count' => 1], ['class' => 'btn btn-warning']) ?>
-            <?php Modal::begin([
-                'header' => '<h4>Buy ' . $model->name . ' in bulk!</h4>',
-                'toggleButton' => ['label' => 'Bulk Order', 'class' => 'btn btn-warning'],
-            ]);
-            echo 'Enter amount:<br><input type="text" id="bulkcount" name="bulkcount" value="1"><br><br>';
-            echo Html::a('Purchase', ['order/purchase', 'id' => $model->id], [
-                'id' => 'modalbtn', 
-                'class' => 'btn btn-warning modify', 
-                'onClick' => 'function sethref(){
+            <?php if (Yii::$app->user->isGuest) {
+                echo Html::a('Bulk Order', ['site/login'], ['class' => 'btn btn-warning']);
+            } else {
+                Modal::begin([
+                    'header' => '<h4>Buy ' . $model->name . ' in bulk!</h4>',
+                    'toggleButton' => ['label' => 'Bulk Order', 'class' => 'btn btn-warning'],
+                ]);
+                echo 'Enter amount:<br><input type="text" id="bulkcount" name="bulkcount" value="1"><br><br>';
+                echo Html::a('Purchase', ['order/purchase', 'id' => $model->id], [
+                    'id' => 'modalbtn',
+                    'class' => 'btn btn-warning modify',
+                    'onClick' => 'function sethref(){
                         $("#modalbtn").attr("href", $("#modalbtn").attr("href") + "&count=" + $("#bulkcount").val());
                 };sethref()'
-            ]);
-            Modal::end(); ?>
+                ]);
+                Modal::end();
+            } ?>
         </p>
     <?php endif; ?>
     <?php
