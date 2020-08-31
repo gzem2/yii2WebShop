@@ -35,7 +35,7 @@ class m200709_122708_create_order_table extends Migration
             '{{%fk-order-customer_id}}',
             '{{%order}}',
             'customer_id',
-            '{{%customer}}',
+            '{{%customers}}',
             'id',
             'CASCADE'
         );

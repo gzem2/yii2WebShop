@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%productcategory}}`.
  */
-class m200709_122913_create_productcategory_table extends Migration
+class m200708_115313_create_productcategory_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -13,7 +13,7 @@ class m200709_122913_create_productcategory_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%productcategory}}', [
-            'id' => $this->primaryKey(),
+            'id' => $this->primaryKey()->notNull()->defaultValue(1),
             'category_name' => $this->string(),
             'category_description' => $this->text(),
         ]);

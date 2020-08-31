@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   php:
     image: yiisoftware/yii2-php:7.1-apache
@@ -6,4 +6,17 @@ services:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
     ports:
-      - '8000:80'
+      - "0.0.0.0:8080:80"
+    depends_on:
+      - "db"
+    command: ["./docker/docker-wait-for-mysql.sh"]
+
+  db:
+    container_name: db
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: webshop
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']

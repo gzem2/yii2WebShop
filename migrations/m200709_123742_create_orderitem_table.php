@@ -51,7 +51,7 @@ class m200709_123742_create_orderitem_table extends Migration
             '{{%fk-orderitem-product_id}}',
             '{{%orderitem}}',
             'product_id',
-            '{{%product}}',
+            '{{%products}}',
             'id',
             'CASCADE'
         );

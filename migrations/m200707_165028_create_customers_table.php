@@ -1,6 +1,5 @@
 <?php
 
-use app\models\Customer;
 use yii\db\Migration;
 use yii\db\Schema;
 
@@ -20,8 +19,8 @@ class m200707_165028_create_customers_table extends Migration
             'password' => Schema::TYPE_STRING . ' NOT NULL',
             'address' => Schema::TYPE_STRING . ' NOT NULL',
             'auth_key' => Schema::TYPE_STRING . ' NOT NULL',
-            'auth_token' => Schema::TYPE_STRING . ' NOT NULL',
-            'enable_autologin' => Schema::TYPE_BOOLEAN . ' NOT NULL',
+            'auth_token' => $this->string()->notNull()->defaultValue(''),
+            'enable_autologin' => $this->boolean()->notNull()->defaultValue(True),
         ]);
 
         // Create admin user
